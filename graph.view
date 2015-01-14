@@ -1,0 +1,54 @@
+<?php
+//To do insert inside kana
+
+$dynamic_js[] = USER_VIEWS."graph/js/graph.js";
+
+
+$sensors_list = Variable::get_data("sensors/info");
+
+foreach($sensors_list as $sensor){
+	if($sensor["sensor_type"] != "unknown"){
+		$sensors_plugins[] = [
+		"text" => $sensor["sensor_name"],
+		"value" => $sensor["sensor_type"]."|".$sensor["sensor_id"],
+		"img" => "plugins/sensors/".$sensor["sensor_type"]."/icon.png"
+		];
+	}
+}
+
+$input_sensor_type = [
+	"id" => "rrd_typeid",
+	"sensors" => $sensors_plugins,
+	"selected" => false,
+	"onclick" => ""
+];
+
+?>
+<div id="graph" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<?
+$tpl->assign("input",$input_sensor_type);
+$tpl->draw(CORE_VIEWS."forms/inputs/select_sensorimg");
+
+
+?>
+
+<select id="rrd_time">
+	<option value="1h">1 hour</option>
+	<option value="3h">3 hours</option>
+	<option value="1d">1 day</option>
+	<option value="2d">2 days</option>
+	<option value="1w">1 week</option>
+	<option value="1m">1 month</option>
+	<option value="3m">3 months</option>
+	<option value="1y">1 year</option>
+</select>
+<button class="btn btn-success" onclick="make_graph()">Create graph</button>
+<button class="btn btn-warning" onclick="destroy_graph()">Destroy graph</button>
+Label <input id="rrd_datatoggle" onclick="datalabel_toggle()" type="checkbox">
+<br>
+<label>Title</label>
+<input class="form-control" id="rrd_title" type="text">
+<label>Subtitle</label>
+<input class="form-control" id="rrd_subtitle" type="text">
+<br>
+<button class="btn btn-success" onclick="update_text_graph()">OK</button>
