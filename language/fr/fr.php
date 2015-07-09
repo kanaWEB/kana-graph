@@ -1,3 +1,3 @@
 <?php
-$lang["List"] = "Listes";
-?>
+
+$lang['List'] = 'Listes';
